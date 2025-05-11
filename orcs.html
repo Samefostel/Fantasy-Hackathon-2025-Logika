@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Мир Орков</title>
+<title>Світ Орків</title>
 
-<!-- Иконка (favicon) -->
+<!-- Іконка (favicon) -->
 <link rel="icon" href="https://media.istockphoto.com/id/1499812783/ru/%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%BD%D0%B0%D1%8F/%D0%BE%D1%80%D0%BA-%D0%B2%D0%B5%D0%BA%D1%82%D0%BE%D1%80%D0%BD%D0%B0%D1%8F-%D0%B8%D0%BB%D0%BB%D1%8E%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F-%D1%82%D1%80%D0%BE%D0%BB%D0%BB%D1%8F-%D0%B2%D0%BE%D0%B8%D0%BD%D0%B0-%D0%BB%D0%BE%D0%B3%D0%BE%D1%82%D0%B8%D0%BF-%D0%BA%D0%B8%D0%B1%D0%B5%D1%80%D1%81%D0%BF%D0%BE%D1%80%D1%82%D0%B8%D0%B2%D0%BD%D0%BE%D0%B9-%D0%B8%D0%B3%D1%80%D1%8B-monster-orc.jpg?s=612x612&w=0&k=20&c=e06EKsUcoTJfyBtQwskd_GnaS3Ifsgwf4vBszy_4wWU=" type="image/jpeg" />
 
-<!-- Подключение Tailwind CSS -->
+<!-- Підключення Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 
 <style>
-  /* Основные стили */
+  /* Основні стилі */
   html {
-    scroll-behavior: smooth; /* плавный скролл по всему сайту */
+    scroll-behavior: smooth; /* плавний скролл по всьому сайту */
   }
 
   body {
@@ -36,7 +36,7 @@
     --color-text: #f5f5f5;
   }
 
-  /* Улучшенные анимации */
+  /* Покращені анімації */
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
@@ -73,7 +73,7 @@
     animation: slideInRight 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
   }
 
-  /* Навигация */
+  /* Навігація */
   #nav-dots {
     position: fixed;
     top: 50%;
@@ -120,7 +120,7 @@
     box-shadow: 0 0 16px rgba(154, 205, 50, 1);
   }
 
-  /* Тултипы */
+  /* Тултіпи */
   .tooltip {
     position: absolute;
     right: 40px;
@@ -139,7 +139,7 @@
     transform: translateY(-50%) translateX(0);
   }
 
-  /* Секции */
+  /* Секції */
   section {
     padding: 60px 20px;
     max-width: 1100px;
@@ -209,7 +209,7 @@
     transform: scale(0.8) translateY(20px);
   }
   
-  /* Анимации для галерейных элементов с задержками */
+  /* Анімації для галерейних елементів із затримками */
   .shelf-item:nth-child(1) {
     animation: fadeInUp 0.8s forwards 0.2s;
   }
@@ -265,7 +265,7 @@
     box-shadow: 0 6px 12px rgba(0,0,0,0.4);
   }
 
-  /* Модальное окно */
+  /* Модальне вікно */
   #game-area {
     display: none;
     animation: fadeIn 0.5s forwards;
@@ -321,7 +321,7 @@
     transform: scale(1.2);
   }
 
-  /* Встречащее сообщение (персонаж) */
+  /* Привітальне повідомлення (персонаж) */
   #greeting {
     position: fixed;
     bottom: 20px;
@@ -367,187 +367,187 @@
 </head>
 <body>
 
-<!-- Встречающая персонажа -->
+<!-- Привітальний персонаж -->
 <div id="greeting" class="hidden">
-  <img src="https://cdn.pixabay.com/photo/2022/04/06/23/38/character-7116540_960_720.png" alt="Встречающий персонаж" />
+  <img src="https://cdn.pixabay.com/photo/2022/04/06/23/38/character-7116540_960_720.png" alt="Персонаж-гід" />
   <div>
-    <p>Привет! Используйте точки справа или колесико мыши, чтобы навигировать по миру орков. Нажмите, чтобы открыть меню!</p>
+    <p>Привіт! Використовуйте точки справа або коліщатко миші, щоб переміщатися світом орків. Натисніть, щоб відкрити меню!</p>
   </div>
 </div>
 
-<!-- Навигация справа -->
-<div id="nav-dots" aria-label="Навигация">
-  <div class="nav-dot" data-section="home" aria-label="Главная">
-    <div class="tooltip">Главная</div>
+<!-- Навігація справа -->
+<div id="nav-dots" aria-label="Навігація">
+  <div class="nav-dot" data-section="home" aria-label="Головна">
+    <div class="tooltip">Головна</div>
   </div>
-  <div class="nav-dot" data-section="history" aria-label="История">
-    <div class="tooltip">История</div>
+  <div class="nav-dot" data-section="history" aria-label="Історія">
+    <div class="tooltip">Історія</div>
   </div>
-  <div class="nav-dot" data-section="types" aria-label="Виды">
-    <div class="tooltip">Виды</div>
+  <div class="nav-dot" data-section="types" aria-label="Види">
+    <div class="tooltip">Види</div>
   </div>
-  <div class="nav-dot" data-section="legend" aria-label="Легенды">
-    <div class="tooltip">Легенды</div>
+  <div class="nav-dot" data-section="legend" aria-label="Легенди">
+    <div class="tooltip">Легенди</div>
   </div>
   <div class="nav-dot" data-section="gallery" aria-label="Галерея">
     <div class="tooltip">Галерея</div>
   </div>
-  <div class="nav-dot" data-section="tournaments" aria-label="Турниры">
-    <div class="tooltip">Турниры</div>
+  <div class="nav-dot" data-section="tournaments" aria-label="Турніри">
+    <div class="tooltip">Турніри</div>
   </div>
-  <div class="nav-dot" data-section="game" aria-label="Игра">
-    <div class="tooltip">Игра</div>
+  <div class="nav-dot" data-section="game" aria-label="Гра">
+    <div class="tooltip">Гра</div>
   </div>
 </div>
 
-<!-- Основной контент -->
+<!-- Основний контент -->
 <main id="main-content" class="space-y-8">
 
-  <!-- Главная -->
+  <!-- Головна -->
   <section id="section-home" class="">
-    <h1>Мир Орков</h1>
+    <h1>Світ Орків</h1>
     <p class="content text-center max-w-2xl mx-auto">
-      Добро пожаловать в захватывающий и опасный мир орков! Здесь вы найдете легенды, виды, турниры и многое другое. Исследуйте их историю и окунитесь в приключения.
+      Ласкаво просимо до захоплюючого та небезпечного світу орків! Тут ви знайдете легенди, види, турніри та багато іншого. Дізнайтеся про їхню історію та пориньте у пригоди.
     </p>
     <div class="flex justify-center mt-6">
-      <div class="btn" data-section="history">Подробнее о истории</div>
+      <div class="btn" data-section="history">Дізнатися більше про історію</div>
     </div>
   </section>
 
-  <!-- История -->
+  <!-- Історія -->
   <section id="section-history" class="hidden">
-    <h2>История Орков</h2>
+    <h2>Історія Орків</h2>
     <p class="content max-w-3xl mx-auto">
-      Орки — древний и могучий народ, возникший тысячи лет назад в суровых землях. Их история полна битв за выживание и завоевания. Они славятся своей силой, стойкостью и богатой культурой, передаваемой из поколения в поколение. Легенды рассказывают о великих вождях и битвах, которые сформировали их народ.
+      Орки - древній і могутній народ, що виник тисячі років тому у суворих землях. Їхня історія сповнена битв за виживання та завоювання. Вони славляться своєю силою, стійкістю та багатою культурою, яка передається з покоління у покоління. Легенди розповідають про великих вождів та битви, які сформували цей народ.
     </p>
   </section>
 
-  <!-- Виды -->
+  <!-- Види -->
   <section id="section-types" class="hidden">
-    <h2>Виды Орков</h2>
+    <h2>Види Орків</h2>
     <div class="grid md:grid-cols-2 gap-6 mt-8 max-w-5xl mx-auto">
-      <!-- Карточки видов -->
+      <!-- Картки видів -->
       <div class="bg-gray-800 p-6 rounded-lg shadow-lg transition-transform hover:scale-105 hover:shadow-xl animate-fadeInUp">
-        <h3 class="text-xl mb-2" style="color: var(--color-secondary);">Горные Орки</h3>
-        <p>Обитатели высоких гор, славятся силой и стойкостью. Их кланы охраняют границы своих земель и ведут тяжелую жизнь в суровых условиях.</p>
+        <h3 class="text-xl mb-2" style="color: var(--color-secondary);">Гірські Орки</h3>
+        <p>Мешканці високих гір, славляться силою та стійкістю. Їхні клани охороняють кордони своїх земель і ведуть важке життя у суворих умовах.</p>
       </div>
       <div class="bg-gray-800 p-6 rounded-lg shadow-lg transition-transform hover:scale-105 hover:shadow-xl animate-fadeInUp" style="animation-delay: 0.2s;">
-        <h3 class="text-xl mb-2" style="color: var(--color-secondary);">Болотные Орки</h3>
-        <p>Живут в болотах и лесах. Мастерски маскируются, ведут партизанскую войну и славятся хитростью и ловкостью.</p>
+        <h3 class="text-xl mb-2" style="color: var(--color-secondary);">Болотні Орки</h3>
+        <p>Живуть у болотах та лісах. Майстерно маскуються, ведуть партизанську війну та славляться хитрістю і спритністю.</p>
       </div>
       <div class="bg-gray-800 p-6 rounded-lg shadow-lg transition-transform hover:scale-105 hover:shadow-xl animate-fadeInUp" style="animation-delay: 0.4s;">
-        <h3 class="text-xl mb-2" style="color: var(--color-secondary);">Пустынные Орки</h3>
-        <p>Адаптированы к пустынным условиям, обладают высокой выносливостью и кочевым образом жизни. Их кланы известны своей тягой к приключениям.</p>
+        <h3 class="text-xl mb-2" style="color: var(--color-secondary);">Пустельні Орки</h3>
+        <p>Адаптовані до пустельних умов, мають високу витривалість і ведуть кочовий спосіб життя. Їхні клани відомі своєю тягою до пригод.</p>
       </div>
       <div class="bg-gray-800 p-6 rounded-lg shadow-lg transition-transform hover:scale-105 hover:shadow-xl animate-fadeInUp" style="animation-delay: 0.6s;">
-        <h3 class="text-xl mb-2" style="color: var(--color-secondary);">Морские Орки</h3>
-        <p>Обитают у берегов и в морских глубинах. Мастера борьбы на воде, их корабли и рыболовные сети известны навеки.</p>
+        <h3 class="text-xl mb-2" style="color: var(--color-secondary);">Морські Орки</h3>
+        <p>Мешкають біля берегів і у морських глибинах. Майстри боротьби на воді, їхні кораблі та рибальські сітки відомі навіки.</p>
       </div>
     </div>
   </section>
 
-  <!-- Легенды -->
+  <!-- Легенди -->
   <section id="section-legend" class="hidden">
-    <h2>Легенды орков</h2>
+    <h2>Легенди орків</h2>
     <p class="content mb-4 max-w-3xl mx-auto animate-fadeInUp">
-      Орки богаты легендами о великих героях, битвах и магических существ. В каждой легенде скрыта мудрость и сила, передаваемая из поколения в поколение.
+      Орки багаті легендами про великих героїв, битви та магічних істот. У кожній легенді прихована мудрість і сила, яка передається з покоління у покоління.
     </p>
     <ul class="list-decimal list-inside space-y-4 max-w-3xl mx-auto animate-fadeInUp" style="animation-delay:0.3s;">
       <li>
-        <strong>Легенда о Вождю Громе</strong> — могучий воин, который поднял орков с колен и объединил разрозненные кланы.
+        <strong>Легенда про Вождя Грома</strong> - могутній воїн, який підняв орків з колін і об'єднав розрізнені клани.
       </li>
       <li>
-        <strong>Магическая камень</strong> — легендарный артефакт, дающий силу и мудрость.
+        <strong>Магічний камінь</strong> - легендарний артефакт, що дає силу та мудрість.
       </li>
       <li>
-        <strong>Битва за Темные горы</strong> — одна из крупнейших сражений, вошедшая в историю.
+        <strong>Битва за Темні гори</strong> - одна з найбільших битв, яка увійшла в історію.
       </li>
     </ul>
   </section>
 
   <!-- Галерея -->
   <section id="section-gallery" class="hidden">
-    <h2>Галерея орков</h2>
+    <h2>Галерея орків</h2>
     <div class="shelf mt-8">
       <div class="shelf-item">
-        <img src="https://cdn.pixabay.com/photo/2024/11/11/00/48/ai-generated-9188880_960_720.jpg" alt="Орк-воин" />
+        <img src="https://cdn.pixabay.com/photo/2024/11/11/00/48/ai-generated-9188880_960_720.jpg" alt="Орк-воїн" />
       </div>
       <div class="shelf-item">
-        <img src="https://cdn.pixabay.com/photo/2024/02/21/19/41/ai-generated-8588445_960_720.jpg" alt="Орк в бою" />
+        <img src="https://cdn.pixabay.com/photo/2024/02/21/19/41/ai-generated-8588445_960_720.jpg" alt="Орк у бою" />
       </div>
       <div class="shelf-item">
-        <img src="https://cdn.pixabay.com/photo/2024/10/03/14/13/orc-9093826_1280.jpg" alt="Орк-воин" />
+        <img src="https://cdn.pixabay.com/photo/2024/10/03/14/13/orc-9093826_1280.jpg" alt="Орк-воїн" />
       </div>
       <div class="shelf-item">
-        <img src="https://cdn.pixabay.com/photo/2024/01/18/18/32/ai-generated-8517466_1280.jpg" alt="Орки у костра" />
+        <img src="https://cdn.pixabay.com/photo/2024/01/18/18/32/ai-generated-8517466_1280.jpg" alt="Орки біля багаття" />
       </div>
     </div>
   </section>
 
-  <!-- Турниры -->
+  <!-- Турніри -->
   <section id="section-tournaments" class="hidden">
-    <h2>Турниры и сражения</h2>
+    <h2>Турніри та битви</h2>
     <p class="content mb-4">
-      Орки ежегодно проводят турниры, где показывают свою силу, ловкость и тактику. Лучшие воины получают признание и почести.
+      Орки щорічно проводять турніри, де демонструють свою силу, спритність і тактику. Найкращі воїни отримують визнання та почесті.
     </p>
     <div class="overflow-x-auto">
       <table class="min-w-full bg-gray-800 rounded-lg overflow-hidden animate-fadeInUp">
         <thead>
           <tr class="bg-gray-700 text-left">
-            <th class="px-4 py-2">Название</th>
+            <th class="px-4 py-2">Назва</th>
             <th class="px-4 py-2">Дата</th>
-            <th class="px-4 py-2">Место</th>
-            <th class="px-4 py-2">Описание</th>
+            <th class="px-4 py-2">Місце</th>
+            <th class="px-4 py-2">Опис</th>
           </tr>
         </thead>
         <tbody>
           <tr class="hover:bg-gray-700">
-            <td class="px-4 py-2">Битва Кланов</td>
-            <td class="px-4 py-2">Март 2024</td>
-            <td class="px-4 py-2">Долина Громов</td>
-            <td class="px-4 py-2">Межклановые сражения за территорию.</td>
+            <td class="px-4 py-2">Битва Кланів</td>
+            <td class="px-4 py-2">Березень 2024</td>
+            <td class="px-4 py-2">Долина Громів</td>
+            <td class="px-4 py-2">Міжкланові битви за територію.</td>
           </tr>
           <tr class="hover:bg-gray-700">
-            <td class="px-4 py-2">Турнир Мастеров</td>
-            <td class="px-4 py-2">Июнь 2024</td>
-            <td class="px-4 py-2">Крепость Теней</td>
-            <td class="px-4 py-2">Сражения лучших воинов орков и других народов.</td>
+            <td class="px-4 py-2">Турнір Майстрів</td>
+            <td class="px-4 py-2">Червень 2024</td>
+            <td class="px-4 py-2">Фортеця Тіней</td>
+            <td class="px-4 py-2">Битви найкращих воїнів орків та інших народів.</td>
           </tr>
           <tr class="hover:bg-gray-700">
-            <td class="px-4 py-2">Кубок Вождей</td>
-            <td class="px-4 py-2">Август 2024</td>
-            <td class="px-4 py-2">Великая Арена</td>
-            <td class="px-4 py-2">Кульминация турниров сезона.</td>
+            <td class="px-4 py-2">Кубок Вождів</td>
+            <td class="px-4 py-2">Серпень 2024</td>
+            <td class="px-4 py-2">Велика Арена</td>
+            <td class="px-4 py-2">Кульмінація турнірів сезону.</td>
           </tr>
         </tbody>
       </table>
     </div>
   </section>
 
-  <!-- Игра -->
+  <!-- Гра -->
   <section id="section-game" class="hidden">
-    <h2>Игровая зона</h2>
+    <h2>Ігрова зона</h2>
     <p class="content mb-4">
-      В разработке! В скором времени вы сможете пройти захватывающие квесты, сразиться с врагами и стать легендарным орком.
+      В розробці! Незабаром ви зможете пройти захоплюючі квести, битися з ворогами та стати легендарним орком.
     </p>
-    <div class="btn" id="start-game-btn">Начать игру</div>
+    <div class="btn" id="start-game-btn">Почати гру</div>
   </section>
 
 </main>
 
-<!-- Модальное окно -->
+<!-- Модальне вікно -->
 <div id="game-area" class="hidden fixed inset-0 bg-black bg-opacity-70 items-center justify-center">
   <div id="game-modal" class="flex items-center justify-center">
     <div id="game-content" class="relative">
       <button id="close-game">×</button>
-      <h3 class="text-2xl mb-4 text-center" style="color: var(--color-accent);">Игра на стадии разработки</h3>
-      <p class="text-center">Здесь будет ваша захватывающая игра про орков! Скоро...</p>
+      <h3 class="text-2xl mb-4 text-center" style="color: var(--color-accent);">Гра на стадії розробки</h3>
+      <p class="text-center">Тут буде ваша захоплююча гра про орків! Скоро...</p>
     </div>
   </div>
 </div>
 
 <script>
-  // Объекты разделов
+  // Об'єкти розділів
   const sections = {
     home: document.getElementById('section-home'),
     history: document.getElementById('section-history'),
@@ -570,10 +570,10 @@
     }
     if (sections[name]) {
       sections[name].classList.remove('hidden');
-      // запуск анимации появления
+      // запуск анімації появи
       sections[name].classList.add('show');
     }
-    // активизация точек
+    // активізація точок
     dots.forEach(dot => {
       if (dot.dataset.section === name) {
         dot.classList.add('active');
@@ -582,21 +582,21 @@
       }
     });
 
-    // Обновляем текущий индекс
+    // Оновлюємо поточний індекс
     currentSectionIndex = sectionOrder.indexOf(name);
     
-    // Если раздел виден, то прокрутка к нему
+    // Якщо розділ видно, то прокрутка до нього
     sections[name].scrollIntoView({ behavior: 'smooth' });
   }
 
-  // Навигация по точкам
+  // Навігація по точках
   dots.forEach(dot => {
     dot.addEventListener('click', () => {
       showSection(dot.dataset.section);
     });
   });
 
-  // Кнопки внутри контента
+  // Кнопки всередині контенту
   document.querySelectorAll('.btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const target = btn.dataset.section || 'history';
@@ -604,7 +604,7 @@
     });
   });
 
-  // Игра
+  // Гра
   document.getElementById('start-game-btn').addEventListener('click', () => {
     const gameArea = document.getElementById('game-area');
     gameArea.classList.remove('hidden');
@@ -616,7 +616,7 @@
     gameArea.classList.remove('flex');
   });
 
-  // Приветствие
+  // Привітання
   const greeting = document.getElementById('greeting');
   greeting.classList.add('show');
   setTimeout(() => {
@@ -629,10 +629,10 @@
     greeting.style.display = 'none';
   });
 
-  // Изначально показываем главную
+  // Спочатку показуємо головну
   showSection('home');
 
-  // Эффект исчезновения подсказки
+  // Ефект зникнення підказки
   const navTip = document.getElementById('nav-tip');
   setTimeout(() => {
     navTip.style.transition = 'opacity 1s ease';
@@ -640,34 +640,34 @@
     setTimeout(() => { navTip.style.display='none'; }, 1000);
   }, 4000);
 
-  // Обработчик колесика мыши
+  // Обробник коліщатка миші
   window.addEventListener('wheel', (e) => {
     if (isScrolling) return;
     
-    // Определяем направление прокрутки
+    // Визначаємо напрямок прокрутки
     const delta = Math.sign(e.deltaY);
     
-    // Если прокрутка вниз и не последний раздел
+    // Якщо прокрутка вниз і не останній розділ
     if (delta > 0 && currentSectionIndex < sectionOrder.length - 1) {
       isScrolling = true;
       currentSectionIndex++;
       showSection(sectionOrder[currentSectionIndex]);
     } 
-    // Если прокрутка вверх и не первый раздел
+    // Якщо прокрутка вгору і не перший розділ
     else if (delta < 0 && currentSectionIndex > 0) {
       isScrolling = true;
       currentSectionIndex--;
       showSection(sectionOrder[currentSectionIndex]);
     }
     
-    // Задержка перед следующей прокруткой
+    // Затримка перед наступною прокруткою
     clearTimeout(scrollTimeout);
     scrollTimeout = setTimeout(() => {
       isScrolling = false;
     }, 800);
   });
 
-  // Обработчик клавиш стрелок
+  // Обробник клавіш стрілок
   window.addEventListener('keydown', (e) => {
     if (isScrolling) return;
     
