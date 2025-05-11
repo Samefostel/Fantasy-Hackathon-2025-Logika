@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Тест: Який ти ельф?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+  <style>
+    :root {
+      --bg-color: rgba(255, 255, 255, 0.95);
+      --text-color: #000;
+      --btn-bg: #007bff;
+      --btn-hover: #0056b3;
+      --correct: #28a745;
+      --wrong: #dc3545;
+    }
+
+    body.dark {
+      --bg-color: rgba(0, 0, 0, 0.85);
+      --text-color: #f5f5f5;
+      --btn-bg: #444;
+      --btn-hover: #666;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      background-color: #000;
+      color: var(--text-color);
+      transition: background-color 0.5s, color 0.5s;
+    }
+
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      min-width: 100vw;
+      min-height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .container {
+      background: var(--bg-color);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 600px;
+      text-align: center;
+      z-index: 1;
+      transition: background-color 0.5s;
+      position: relative;
+    }
+
+    .avatar-selection {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 1rem 0;
+      flex-wrap: wrap;
+    }
+
+    .avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: border 0.3s ease, transform 0.3s ease;
+      object-fit: cover;
+    }
+
+    .avatar:hover {
+      transform: scale(1.1);
+    }
+
+    .avatar.selected {
+      border-color: var(--btn-bg);
+      transform: scale(1.2);
+    }
+
+    .start-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: var(--btn-bg);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s, transform 0.2s ease;
+    }
+
+    .start-btn:hover {
+      background-color: var(--btn-hover);
+      transform: scale(1.1);
+    }
+
+    .start-btn:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .question {
+      font-size: 24px;
+      margin: 20px 0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+
+    .question.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .answers {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease-out 0.2s, transform 0.5s ease-out 0.2s;
+    }
+
+    .answers.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .answer-btn {
+      padding: 15px;
+      font-size: 18px;
+      background-color: var(--btn-bg);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s ease;
+    }
+
+    .answer-btn:hover {
+      background-color: var(--btn-hover);
+      transform: scale(1.1);
+    }
+
+    .statistics {
+      text-align: center;
+      font-size: 18px;
+    }
+
+    #timer-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+
+    .timer {
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.5s ease;
+    }
+
+    .timer.low-time {
+      color: #dc3545;
+    }
+
+    .material-symbols-outlined {
+      font-size: 24px;
+      vertical-align: middle;
+    }
+
+    .theme-switch {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+    }
+
+    .theme-switch input {
+      display: none;
+    }
+
+    .theme-switch label {
+      cursor: pointer;
+      background: #ccc;
+      border-radius: 30px;
+      width: 50px;
+      height: 26px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .theme-switch label::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 22px;
+      height: 22px;
+      background: #fff;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+
+    .theme-switch input:checked + label {
+      background: #333;
+    }
+
+    .theme-switch input:checked + label::after {
+      transform: translateX(24px);
+    }
+
+    #end-early-btn:hover {
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <video autoplay muted loop id="bg-video">
+    <source src="https://cdn.pixabay.com/video/2023/07/31/174062-850287032_large.mp4" type="video/mp4" />
+  </video>
+
+  <div class="theme-switch">
+    <input type="checkbox" id="theme-toggle" />
+    <label for="theme-toggle"></label>
+  </div>
+
+  <div class="container">
+    <!-- Вибір аватара і імені -->
+    <div id="avatar-screen" class="visible">
+      <h1>Який ти ельф?</h1>
+      <div class="avatar-selection">
+        <img src="https://i.pinimg.com/736x/6e/e3/e4/6ee3e4c5749fd202eca9c7575b65fdce.jpg" class="avatar" />
+        <img src="https://i.pinimg.com/736x/d4/3e/a3/d43ea38a0745783d81bb6a0c5e7ef4bb.jpg" class="avatar" />
+        <img src="https://i.pinimg.com/736x/4a/b5/13/4ab513fa64d60fd8d303164cc4b16ab2.jpg" class="avatar" />
+      </div>
+      <button id="start-btn" class="start-btn">Почати тест</button>
+    </div>
+
+    <!-- Відображення питання -->
+    <div id="question-screen" class="hidden">
+      <div id="timer-container">
+        <div class="timer">
+          <span class="material-symbols-outlined">timer</span>
+          <span id="timer-text">60 сек</span>
+        </div>
+      </div>
+      <div id="question" class="question"></div>
+      <div id="answers" class="answers"></div>
+      <button id="end-early-btn" class="start-btn" style="margin-top: 15px;">Завершити тест</button>
+    </div>
+
+    <!-- Результат -->
+    <div id="result-screen" class="hidden statistics">
+      <h3 id="result-message"></h3>
+      <button id="start-btn-retry" class="start-btn">Почати знову</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const startBtn = document.getElementById('start-btn');
+      const startBtnRetry = document.getElementById('start-btn-retry');
+      const avatarScreen = document.getElementById('avatar-screen');
+      const questionScreen = document.getElementById('question-screen');
+      const resultScreen = document.getElementById('result-screen');
+      const questionElement = document.getElementById('question');
+      const answersContainer = document.getElementById('answers');
+      const resultMessage = document.getElementById('result-message');
+      const timerText = document.getElementById('timer-text');
+      const avatarImages = document.querySelectorAll('.avatar');
+      const themeToggle = document.getElementById('theme-toggle');
+      const endEarlyBtn = document.getElementById('end-early-btn');
+
+      themeToggle.addEventListener('change', () => {
+        document.body.classList.toggle('dark', themeToggle.checked);
+      });
+
+      let selectedAvatar = null;
+      let questions = [];
+      let currentQuestionIndex = 0;
+      let correctAnswers = 0;
+      let totalQuestions = 5; // кількість питань
+      let timeLeft = 60;
+      let timerInterval;
+
+      // Визначення питань
+      const questionsData = [
+        {
+          question: "Як ти віддаєш перевагу проводити час?",
+          options: [
+            "Грати на луці серед дерев",
+            "Працювати в саду з квітами",
+            "Розповідати казки дітям",
+            "Мандрувати чарівною країною"
+          ],
+          type: "відповідь"
+        },
+        {
+          question: "Який твій улюблений колір?",
+          options: [
+            "Зелений",
+            "Блакитний",
+            "Золотий",
+            "Червоний"
+          ],
+          type: "відповідь"
+        },
+        {
+          question: "Що ти любиш робити найчастіше?",
+          options: [
+            "Пісні та танці",
+            "Допомагати іншим",
+            "Збирати ягоди та трави",
+            "Мріяти про нові пригоди"
+          ],
+          type: "відповідь"
+        },
+        {
+          question: "Який улюблений час доби?",
+          options: [
+            "Ранок",
+            "Обід",
+            "Вечір",
+            "Ніч"
+          ],
+          type: "відповідь"
+        },
+        {
+          question: "Що для тебе найважливіше?",
+          options: [
+            "Дружба",
+            "Магія",
+            "Пригоди",
+            "Спокій"
+          ],
+          type: "відповідь"
+        }
+      ];
+
+      // Визначення результату
+      function getResult() {
+        // простий аналіз за кількістю відповідей
+        const answersCount = {
+          "Дружба": 0,
+          "Магія": 0,
+          "Пригоди": 0,
+          "Спокій": 0
+        };
+
+        for (let ans of answers) {
+          if (answersCount.hasOwnProperty(ans)) {
+            answersCount[ans]++;
+          }
+        }
+
+        const maxCount = Math.max(...Object.values(answersCount));
+        const topAnswers = Object.keys(answersCount).filter(key => answersCount[key] === maxCount);
+
+        if (topAnswers.includes("Дружба")) {
+          return "Ти — Ельф Дружби! Твоя серце відкрите до всіх і ти завжди допомагаєш іншим.";
+        } else if (topAnswers.includes("Магія")) {
+          return "Ти — Ельф Магії! Твоя магічна сила і ти знаєш багато чарів.";
+        } else if (topAnswers.includes("Пригоди")) {
+          return "Ти — Ельф Пригод! Твоя жага до пригод веде тебе по світу.";
+        } else {
+          return "Ти — Ельф Спокою! Ти цінуєш мир і спокій у своєму житті.";
+        }
+      }
+
+      let answers = [];
+
+      // Обробка аватара
+      avatarImages.forEach(img => {
+        img.addEventListener('click', () => {
+          avatarImages.forEach(avatar => avatar.classList.remove('selected'));
+          img.classList.add('selected');
+          selectedAvatar = img.src;
+        });
+      });
+
+      startBtn.addEventListener('click', () => {
+        if (!selectedAvatar) {
+          alert("Будь ласка, виберіть аватар!");
+          return;
+        }
+        // Ініціалізація тесту
+        questions = [...questionsData];
+        currentQuestionIndex = 0;
+        correctAnswers = 0;
+        answers = [];
+        avatarScreen.classList.add('hidden');
+        questionScreen.classList.remove('hidden');
+        startTimer();
+        loadQuestion();
+      });
+
+      function startTimer() {
+        timeLeft = 60;
+        updateTimer();
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          updateTimer();
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            finishTest();
+          }
+        }, 1000);
+      }
+
+      function updateTimer() {
+        timerText.textContent = `${timeLeft} сек`;
+        if (timeLeft <= 10) {
+          document.querySelector('.timer').classList.add('low-time');
+        } else {
+          document.querySelector('.timer').classList.remove('low-time');
+        }
+      }
+
+      function loadQuestion() {
+        const q = questions[currentQuestionIndex];
+        questionElement.textContent = q.question;
+        questionElement.classList.remove('visible');
+        answersContainer.innerHTML = "";
+        
+        q.options.forEach((option, index) => {
+          const btn = document.createElement('button');
+          btn.className = 'answer-btn';
+          btn.textContent = option;
+          btn.onclick = () => handleAnswer(option);
+          answersContainer.appendChild(btn);
+        });
+        
+        answersContainer.classList.remove('visible');
+        
+        // Запускаємо анімацію після невеликої затримки, щоб DOM оновився
+        setTimeout(() => {
+          questionElement.classList.add('visible');
+          answersContainer.classList.add('visible');
+        }, 50);
+      }
+
+      function handleAnswer(selectedOption) {
+        answers.push(selectedOption);
+        currentQuestionIndex++;
+        if (currentQuestionIndex >= questions.length) {
+          clearInterval(timerInterval);
+          finishTest();
+        } else {
+          // Спочатку ховаємо поточне питання
+          questionElement.classList.remove('visible');
+          answersContainer.classList.remove('visible');
+          
+          // Після завершення анімації завантажуємо наступне питання
+          setTimeout(() => {
+            loadQuestion();
+          }, 500);
+        }
+      }
+
+      function finishTest() {
+        questionScreen.classList.add('hidden');
+        resultScreen.classList.remove('hidden');
+        const resultText = getResult();
+        resultMessage.innerHTML = `
+          <p><strong>Ваш ельф: </strong></p>
+          <p>${resultText}</p>
+        `;
+      }
+
+      document.getElementById('end-early-btn').addEventListener('click', () => {
+        clearInterval(timerInterval);
+        finishTest();
+      });
+
+      document.getElementById('start-btn-retry').addEventListener('click', () => {
+        resultScreen.classList.add('hidden');
+        avatarScreen.classList.remove('hidden');
+        answers = [];
+      });
+    });
+  </script>
+</body>
+</html>
