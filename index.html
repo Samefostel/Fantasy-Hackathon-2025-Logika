@@ -3,22 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Мир Древних Эльфов</title>
-    <!-- Подключение Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Вибір раси</title>
+    <link rel="icon" href="https://i.pinimg.com/736x/83/cc/42/83cc42b32ea545e937df77d0e3048951.jpg" type="image/jpeg" />
     <style>
-        /* Ваши существующие CSS-переменные и базовые стили */
         :root {
-            --color-1: #a3be8c;
-            --color-2: #d08770;
-            --color-3: #b48ead;
-            --color-4: #8fbcbb;
-            --linear-ease: linear(0, 0.068, 0.19 2.7%, 0.804 8.1%, 1.037, 1.199 13.2%, 1.245, 1.27 15.8%, 1.274, 1.272 17.4%, 1.249 19.1%, 0.996 28%, 0.949, 0.928 33.3%, 0.926, 0.933 36.8%, 1.001 45.6%, 1.013, 1.019 50.8%, 1.018 54.4%, 1 63.1%, 0.995 68%, 1.001 85%, 1);
-            --elf-green: #2d5a3d;
             --elf-gold: #d4af37;
             --elf-silver: #c0c0c0;
-            --dark-elf: #4a2545;
-            --wood-elf: #3c5e2a;
             --orc-skin: #6b8e23;
             --orc-red: #8b0000;
         }
@@ -27,806 +17,174 @@
             height: 100%;
             margin: 0;
             font-family: 'Georgia', serif;
-            color: #f0f0f0;
-            overflow-x: hidden;
-            perspective: 1000px; /* Добавляем перспективу для 3D эффектов */
-            background: #1a202c; /* Запасной фон */
-            overflow-y: auto; /* Разрешаем скролл */
-            /* Стили для курсора - используем ваше изображение */
-            cursor: url("https://e7.pngegg.com/pngimages/270/137/png-clipart-minecraft-pocket-edition-bow-and-arrow-texture-mapping-saw-angle-tool.png") , auto;
+            color: white;
+            overflow: hidden;
         }
 
-         /* Стили для видеофона */
-         #background-video {
-             position: fixed;
-             top: 50%;
-             left: 50%;
-             min-width: 100%;
-             min-height: 100%;
-             width: auto;
-             height: auto;
-             z-index: -2; /* Под всеми другими элементами */
-             transform: translate(-50%, -50%);
-             object-fit: cover; /* Растягивает видео, сохраняя пропорции */
-             /* Немного затемняем и обесцветчиваем - можно подкорректировать для нового видео */
-             filter: brightness(0.6) grayscale(0.2);
-         }
-
-
-        #app {
-            display: grid;
-            grid-template-rows: auto 1fr auto;
-            place-items: center;
-            /* Фоновое изображение теперь в parallax-background, но этот класс теперь для наложения */
-            padding: 20px;
-            box-sizing: border-box;
-            position: relative;
-            min-height: 100vh; /* Высота по содержимому */
-            transform-style: preserve-3d; /* Сохраняем 3D трансформации */
-            visibility: hidden; /* Скрываем по умолчанию */
-        }
-
-        #app.visible {
-            visibility: visible; /* Показываем после выбора расы */
-        }
-
-
-         /* Параллакс контейнер для фона - теперь это слой для наложения поверх видео */
-        .parallax-background {
+        #background-video {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1; /* Под контентом, но поверх видео */
-            transform: translateZ(-100px) scale(1.2); /* Отдаляем и увеличиваем для параллакса */
-            transform-style: preserve-3d;
-             /* Добавим сюда полупрозрачное наложение, если нужно */
-            background: rgba(0, 0, 0, 0.2); /* Полупрозрачное черное наложение */
-        }
-
-        /* Параллакс элемент - лучник */
-        .parallax-archer {
-            position: fixed;
-            right: 5%;
-            bottom: 10%;
-            width: 300px;
-            height: 500px;
-            background-image: url('https://cdn.pixabay.com/photo/2022/04/24/02/59/archer-7152778_1280.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: bottom right;
-            z-index: 2;
-            transform: translateZ(50px) translateY(0); /* Ближе к пользователю */
-            transition: transform 0.1s ease-out;
-            pointer-events: none;
-            transform-style: preserve-3d;
-        }
-
-        /* Параллакс элемент - орк */
-         .parallax-orc {
-             position: fixed;
-             left: 5%; /* Слева для орка */
-             bottom: 10%;
-             width: 350px; /* Может быть чуть шире */
-             height: 500px;
-             z-index: 2;
-             transform: translateZ(50px) translateY(0);
-             transition: transform 0.1s ease-out;
-             pointer-events: none;
-             transform-style: preserve-3d;
-         }
-
-         .parallax-orc img {
-             width: 100%;
-             height: 100%;
-             object-fit: contain;
-             object-position: bottom left; /* Прижимаем к левому нижнему углу */
-         }
-
-
-        @media (max-width: 768px) {
-            .parallax-archer {
-                width: 150px;
-                height: 250px;
-                right: 2%;
-                bottom: 5%;
-                transform: translateZ(20px) translateY(0); /* Меньше эффект на моб. */
-            }
-             .parallax-orc {
-                 width: 180px;
-                 height: 250px;
-                 left: 2%;
-                 bottom: 5%;
-                 transform: translateZ(20px) translateY(0);
-             }
-        }
-
-        h1 {
-            color: var(--elf-gold);
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
-            font-size: 3.5rem;
-            margin-bottom: 2rem;
-            text-align: center;
-            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-            letter-spacing: 1px;
-            position: relative;
-            z-index: 5;
-            transform-style: preserve-3d;
-            transform: translateZ(30px); /* Немного ближе */
-        }
-
-        /* Навигация - сохраняем большинство стилей из-за сложности эффекта */
-        nav {
-            display: flex;
-            position: relative;
-            transform: translateZ(20px); /* Ближе */
-            opacity: 0.999;
-            background: hsl(205deg 0% 0% / 0.1);
-            backdrop-filter: blur(9px) brightness(1.1);
-            border-radius: 100vw;
-            padding: 0.4em;
-            box-shadow:
-                0 4px 20px hsl(205deg 50% 30% / 0.15),
-                0 4px 10px hsl(205deg 30% 10% / 0.075),
-                inset 0 -4px 15px 6px hsl(205deg 70% 90% / 0.2),
-                inset 0 -2px 5px hsl(205deg 70% 90% / 0.15),
-                inset 0 -1px 1px hsl(205deg 70% 90% / 0.4),
-                inset 0 10px 15px hsl(205deg 30% 10% / 0.2),
-                inset 0 1px 2px hsl(205deg 70% 90% / 0.3);
-            margin-bottom: 2rem;
-            z-index: 10;
-            transform-style: preserve-3d;
-        }
-
-        nav:before {
-            content: "";
-            inset: 0;
-            position: absolute;
-            mask-image: url(https://assets.codepen.io/13471/nnnoise%281%29.png);
-            mask-mode: luminance;
-            mask-repeat: repeat;
-            mask-size: 55%;
-            border-radius: 100vw;
-            z-index: 1;
-            backdrop-filter: blur(7px) brightness(1.05);
-            background: hsl(205deg 0% 100% / 0.1);
-            transform-style: preserve-3d;
-        }
-
-        nav:after {
-            content: "";
-            inset: 0;
-            position: absolute;
-            mask-image: url(https://assets.codepen.io/13471/nnnoise%281%29.png);
-            mask-mode: luminance;
-            mask-size: 50%;
-            mask-repeat: repeat;
-            border-radius: 100vw;
-            z-index: 2;
-            backdrop-filter: blur(5px) brightness(0.95);
-            box-shadow:
-                inset 0 -4px 15px 5px hsl(205deg 70% 90% / 0.3),
-                inset 0 -2px 5px hsl(205deg 70% 90% / 0.15),
-                inset 0 -1px 1px hsl(205deg 70% 90% / 0.4),
-                inset 0 1px 2px hsl(205deg 70% 90% / 0.3);
-            background: hsl(205deg 0% 20% / 0.05);
-            transform-style: preserve-3d;
-        }
-
-        nav ul {
-            display: flex;
-            gap: 1.5em;
-            list-style: none;
-            padding: 0 1em;
-            margin: 0;
-            position: relative;
-            z-index: 3;
-            color: white;
-            text-shadow: 0 1px 1px hsl(205deg 30% 10% / 0.2);
-            transform-style: preserve-3d;
-        }
-
-        nav ul li {
-            padding: 0.6em 1em;
-            border-radius: 100vw;
-            position: relative;
-            transition: all 1.8s var(--linear-ease) 0.2s, box-shadow 0.3s ease;
-            color: white;
-            cursor: url("https://e7.pngegg.com/pngimages/270/137/png-clipart-minecraft-pocket-edition-bow-and-arrow-texture-mapping-saw-angle-tool.png") , pointer; /* Курсор стрелы с запасным pointer */
-            box-shadow: 0 0 0.5px 1.5px transparent;
-            transform-style: preserve-3d;
-        }
-
-        nav ul li a {
-            color: inherit;
-            text-decoration: none;
-            font-size: 1.1rem;
-            white-space: nowrap;
-            transform-style: preserve-3d;
-        }
-
-        nav ul li:focus-within:has(:focus-visible) {
-            box-shadow: 0 0 0.5px 1.5px white;
-        }
-
-        nav ul li:after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: 100vw;
-            background: white;
-            opacity: 0;
-            scale: 0;
-            transition: all 2s var(--linear-ease) 0.2s;
-            z-index: -1;
-            transform-style: preserve-3d;
-        }
-
-        nav ul li.active {
-            color: var(--elf-green);
-            text-shadow: none;
-            font-weight: bold;
-        }
-
-        nav ul li.active:after {
-            opacity: 1;
-            scale: 1;
-            background: var(--elf-gold);
-        }
-
-        .effect {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 0px;
-            height: 0px;
-            opacity: 1;
-            pointer-events: none;
-            display: grid;
-            place-items: center;
-            z-index: 1;
-            transform-style: preserve-3d;
-        }
-
-        .effect.text {
-            color: white;
-            z-index: 1;
-            transition: color 0s ease;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transform-style: preserve-3d;
-        }
-
-        .effect.text.active {
-            color: var(--elf-gold);
-            transition: color 1.8s var(--linear-ease) 0.2s;
-        }
-
-        .effect.text.hidden {
-            opacity: 0;
-        }
-
-        .effect.filter {
-            filter: blur(7px) contrast(20) blur(0);
-            mix-blend-mode: lighten;
-            position: absolute;
-            transform-style: preserve-3d;
-        }
-
-        .effect.filter::before {
-            content: "";
-            position: absolute;
-            inset: -75px;
-            z-index: -2;
-            background: black;
-            transform-style: preserve-3d;
-        }
-
-        .effect.filter::after {
-            content: "";
-            position: absolute;
-            inset: 0px;
-            background: white;
-            scale: 0;
-            opacity: 0;
-            z-index: -1;
-            border-radius: 100vw;
-            transform-style: preserve-3d;
-        }
-
-        .effect.active:after {
-            animation: pill 2s var(--linear-ease) 0.2s both;
-        }
-
-        .particles {
-            position: absolute;
-            inset: 0;
-            transform: translate3d(0, 0, 0px);
-            transform-style: preserve-3d;
-        }
-
-        .particle, .point {
-            display: block;
-            opacity: 0;
-            width: 20px;
-            height: 20px;
-            border-radius: 100%;
-            transform-origin: center;
-            transform-style: preserve-3d;
-        }
-
-        .particle {
-            --time: 5s;
-            opacity: 0;
-            position: absolute;
-            top: calc(50% - 8px);
-            left: calc(50% - 8px);
-            animation: particle calc(var(--time)) ease 1 -350ms;
-        }
-
-        .point {
-            background: var(--color);
-            opacity: 1;
-            animation: point calc(var(--time)) ease 1 -350ms;
-        }
-
-        @keyframes particle {
-            0% {
-                transform: rotate(0deg) translate(calc(var(--start-x) * 1), calc(var(--start-y) * 1));
-                opacity: 1;
-                animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
-            }
-            70% {
-                transform: rotate(calc(var(--rotate) * 0.5)) translate(calc(var(--end-x) * 1.2), calc(var(--end-y) * 1.2));
-                opacity: 1;
-                animation-timing-function: ease;
-            }
-            85% {
-                transform: rotate(calc(var(--rotate) * 0.66)) translate(calc(var(--end-x) * 1), calc(var(--end-y) * 1));
-                opacity: 1;
-            }
-            100% {
-                transform: rotate(calc(var(--rotate) * 1.2)) translate(calc(var(--end-x) * 0.5), calc(var(--end-y) * 0.5));
-                opacity: 1;
-            }
-        }
-
-        @keyframes point {
-            0% {
-                scale: 0;
-                opacity: 0;
-                animation-timing-function: cubic-bezier(0.55, 0, 1, 0.45);
-            }
-            25% {
-                scale: calc(var(--scale) * 0.25);
-            }
-            38% {
-                opacity: 1;
-            }
-            65% {
-                scale: var(--scale);
-                opacity: 1;
-                animation-timing-function: ease;
-            }
-            85% {
-                scale: var(--scale);
-                opacity: 1;
-            }
-            100% {
-                scale: 0;
-                opacity: 0;
-            }
-        }
-
-        @keyframes pill {
-            to {
-                scale: 1;
-                opacity: 1;
-            }
-        }
-
-        @keyframes pillOff {
-            from {
-                scale: 1;
-                opacity: 1;
-            }
-        }
-
-        /* Контейнер для многостраничного контента */
-        .page-content {
-             max-width: 900px;
-            background: rgba(20, 30, 20, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 2rem;
-            margin: 2rem 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
-            border: 1px solid var(--elf-gold);
-            z-index: 5;
-            transform-style: preserve-3d;
-            display: none; /* По умолчанию скрыты */
-            width: 100%; /* Занимает всю доступную ширину */
-            box-sizing: border-box;
-        }
-
-        .page-content.active {
-            display: block; /* Активная страница отображается */
-        }
-
-
-        .elf-type {
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--elf-gold);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            transform-style: preserve-3d;
-            transition: transform 0.5s ease; /* Плавный переход для 3D эффекта */
-        }
-
-        .elf-type:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        /* 3D эффект наведения на карточку */
-        .elf-type:hover {
-            transform: rotateY(5deg) rotateX(5deg) translateZ(20px); /* Небольшой поворот и приближение */
-        }
-
-        .elf-type h2 {
-            color: var(--elf-gold);
-            margin-top: 0;
-            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-            font-size: 2rem;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-            padding-bottom: 0.5rem;
-            width: 100%; /* Заголовок занимает всю ширину */
-            transform-style: preserve-3d;
-        }
-
-        .elf-type-image {
-            flex: 1 1 300px; /* Гибкий размер изображения */
-            max-width: 400px; /* Максимальная ширина изображения */
-            height: auto;
-            border-radius: 10px;
             object-fit: cover;
-            border: 2px solid var(--elf-silver);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            transform-style: preserve-3d;
-            transition: transform 0.3s ease; /* Плавный переход для внутреннего эффекта */
+            z-index: -2;
+            filter: brightness(0.6);
         }
 
-        .elf-type:hover .elf-type-image {
-            transform: translateZ(10px) rotateZ(-2deg); /* Небольшое смещение и поворот изображения внутри карточки */
-        }
-
-
-        .elf-type-info {
-            flex: 2 1 400px; /* Гибкий размер текста */
-            transform-style: preserve-3d;
-        }
-
-        .elf-type p {
-            line-height: 1.7;
-            font-size: 1.1rem;
-            text-align: justify;
-            margin-top: 0;
-            transform-style: preserve-3d;
-        }
-
-        .enemies {
-            background: rgba(70, 20, 20, 0.6);
-            padding: 1rem;
-            border-radius: 10px;
-            margin-top: 1rem;
-            border-left: 3px solid #d08770;
-            transform-style: preserve-3d;
-        }
-
-        .enemies h3 {
-            color: #d08770;
-            margin-top: 0;
-            font-size: 1.3rem;
-            transform-style: preserve-3d;
-        }
-
-        .enemies p {
-            margin-bottom: 0;
-            transform-style: preserve-3d;
-        }
-
-        /* Исправленный футер */
-        footer {
-            margin-top: 2rem;
-            text-align: center;
-            padding: 1rem;
-            color: var(--elf-silver);
-            font-size: 0.9rem;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            width: 100%;
-            max-width: 900px;
-            backdrop-filter: blur(5px);
-            z-index: 5; /* Убедимся, что он поверх фона */
-            position: relative; /* Для корректного z-index */
-            transform-style: preserve-3d;
-        }
-
-
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            nav ul {
-                gap: 0.5em;
-                padding: 0 0.5em;
-            }
-
-            nav ul li a {
-                font-size: 0.9rem;
-                padding: 0.5em;
-            }
-
-            .page-content {
-                padding: 1.5rem;
-                margin: 1rem;
-            }
-
-            .elf-type {
-                flex-direction: column;
-                align-items: center;
-                transform: none !important; /* Отключаем 3D эффект наведения на маленьких экранах */
-            }
-
-             .elf-type:hover {
-                transform: none !important; /* Отключаем 3D эффект наведения на маленьких экранах */
-            }
-
-            .elf-type-image {
-                width: 80%; /* Уменьшаем ширину изображения на маленьких экранах */
-                max-width: 300px;
-                transform: none !important; /* Отключаем внутренний 3D эффект на маленьких экранах */
-            }
-
-             .elf-type:hover .elf-type-image {
-                transform: none !important; /* Отключаем внутренний 3D эффект на маленьких экранах */
-            }
-
-            .elf-type-info {
-                flex: none; /* Отменяем гибкость */
-                width: 100%;
-            }
-
-             /* Отключаем кастомный курсор на мобильных */
-             body, html {
-                 cursor: auto;
-             }
-             nav ul li {
-                 cursor: pointer; /* Возвращаем стандартный pointer на мобильных */
-             }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 2rem;
-            }
-
-            nav ul {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .page-content {
-                padding: 1rem;
-            }
-
-            .elf-type h2 {
-                font-size: 1.5rem;
-            }
-
-            .elf-type p {
-                font-size: 1rem;
-            }
-
-            .elf-type-image {
-                width: 100%;
-            }
-        }
-
-        /* Анимация появления при скролле */
-        .scroll-animate {
-            opacity: 0;
-            transform: translateY(50px) translateZ(0); /* Добавляем translateZ для сохранения 3D */
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .scroll-animate.is-visible {
-            opacity: 1;
-            transform: translateY(0) translateZ(0);
-        }
-
-        /* Стили для загрузочного экрана */
         #preloader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.95); /* Темный фон */
+            background: rgba(0, 0, 0, 0.95);
             color: var(--elf-gold);
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 2rem;
             font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-            z-index: 9999; /* Поверх всего */
+            z-index: 9999;
             transition: opacity 0.8s ease-out;
             opacity: 1;
         }
 
         #preloader.hidden {
             opacity: 0;
-            pointer-events: none; /* Скрываем для кликов */
+            pointer-events: none;
         }
 
-         /* Простая анимация загрузки (можно заменить на что-то более сложное) */
-         #preloader::after {
-             content: '';
-             display: block;
-             width: 40px;
-             height: 40px;
-             border: 4px solid var(--elf-gold);
-             border-top-color: transparent;
-             border-radius: 50%;
-             animation: spin 1s linear infinite;
-             margin-left: 20px;
-         }
+        #preloader::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--elf-gold);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 20px;
+        }
 
-         @keyframes spin {
-             to { transform: rotate(360deg); }
-         }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
-         /* Стили для стартового окна выбора расы */
-         #start-screen {
-             position: fixed;
-             top: 0;
-             left: 0;
-             width: 100%;
-             height: 100%;
-             /* Убираем старое фоновое изображение */
-             /* background-image: url('https://images.unsplash.com/photo-1511497584788-876760111969?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); */
-             background-size: cover;
-             background-position: center;
-             z-index: 9990; /* Чуть ниже прелоадера */
-             display: flex;
-             flex-direction: column;
-             justify-content: center;
-             align-items: center;
-             color: white;
-             text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
-             transition: opacity 0.8s ease-out;
-             opacity: 1;
-              /* Курсор стрелы на стартовом экране */
-             cursor: url("https://e7.pngegg.com/pngimages/270/137/png-clipart-minecraft-pocket-edition-bow-and-arrow-texture-mapping-saw-angle-tool.png") , auto;
-             /* Добавляем полупрозрачный фон, чтобы текст был виден */
-             background-color: rgba(0, 0, 0, 0.7);
-         }
+        #start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9990;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+            transition: opacity 0.8s ease-out;
+            opacity: 1;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
 
-         #start-screen.hidden {
-             opacity: 0;
-             pointer-events: none;
-         }
+        #start-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
 
-         #start-screen h2 {
-             font-size: 3rem;
-             margin-bottom: 3rem;
-             font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-             text-align: center;
-         }
+        #start-screen h2 {
+            font-size: 3rem;
+            margin-bottom: 3rem;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            text-align: center;
+        }
 
-         .race-selection {
-             display: flex;
-             gap: 50px;
-             flex-wrap: wrap;
-             justify-content: center;
-         }
+        .race-selection {
+            display: flex;
+            gap: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
 
-         .race-option {
-             display: flex;
-             flex-direction: column;
-             align-items: center;
-             cursor: url("https://e7.pngegg.com/pngimages/270/137/png-clipart-minecraft-pocket-edition-bow-and-arrow-texture-mapping-saw-angle-tool.png") , pointer; /* Курсор стрелы с запасным pointer */
-             transition: transform 0.3s ease, opacity 0.3s ease, border-color 0.3s ease; /* Добавляем переход для border-color */
-             background: rgba(0, 0, 0, 0.5);
-             border-radius: 10px;
-             padding: 20px;
-             border: 2px solid transparent; /* Изначально прозрачная рамка */
-         }
+        .race-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, opacity 0.3s ease, border-color 0.3s ease;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            border: 2px solid transparent;
+            text-decoration: none;
+            color: white;
+        }
 
-         .race-option:hover {
-             transform: translateY(-10px) scale(1.05);
-             border-color: var(--elf-gold); /* Золотая рамка при наведении для эльфов */
-         }
+        .race-option:hover {
+            transform: translateY(-10px) scale(1.05);
+            border-color: var(--elf-gold);
+        }
 
-          .race-option.orc:hover {
-              border-color: var(--orc-skin); /* Зеленая рамка при наведении для орков */
-          }
+        .race-option.orc:hover {
+            border-color: var(--orc-skin);
+        }
 
+        .race-option img {
+            width: 200px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 2px solid var(--elf-silver);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
 
-         .race-option img {
-             width: 200px;
-             height: 250px;
-             object-fit: cover;
-             border-radius: 8px;
-             margin-bottom: 15px;
-             border: 2px solid var(--elf-silver); /* Можно поменять цвет рамки изображения */
-             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-         }
-          .race-option.orc img {
-               border-color: var(--orc-red); /* Красная рамка изображения для орков */
-          }
+        .race-option.orc img {
+            border-color: var(--orc-red);
+        }
 
+        .race-option h3 {
+            font-size: 1.8rem;
+            font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
+            margin: 0;
+        }
 
-         .race-option h3 {
-             font-size: 1.8rem;
-             font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, serif;
-             margin: 0;
-         }
+        .race-option.elf h3 {
+            color: var(--elf-gold);
+        }
 
-         .race-option.elf h3 {
-             color: var(--elf-gold);
-         }
+        .race-option.orc h3 {
+            color: var(--orc-skin);
+        }
 
-         .race-option.orc h3 {
-             color: var(--orc-skin);
-         }
+        @media (max-width: 768px) {
+            #start-screen h2 {
+                font-size: 2rem;
+                margin-bottom: 2rem;
+            }
+            .race-selection {
+                gap: 20px;
+            }
+            .race-option img {
+                width: 150px;
+                height: 200px;
+            }
+            .race-option h3 {
+                font-size: 1.5rem;
+            }
+        }
 
-          @media (max-width: 768px) {
-              #start-screen h2 {
-                  font-size: 2rem;
-                  margin-bottom: 2rem;
-              }
-              .race-selection {
-                  gap: 20px;
-              }
-              .race-option img {
-                  width: 150px;
-                  height: 200px;
-              }
-              .race-option h3 {
-                  font-size: 1.5rem;
-              }
-               /* Отключаем кастомный курсор на мобильных */
-              #start-screen {
-                  cursor: auto;
-              }
-              .race-option {
-                  cursor: pointer;
-              }
-          }
-
-         /* Класс для скрытия элементов */
-         .hidden {
-             display: none !important;
-         }
-
-
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
-
     <!-- Видеофон -->
     <video autoplay muted loop id="background-video">
         <source src="https://cdn.pixabay.com/video/2023/07/31/174062-850287032_large.mp4" type="video/mp4">
-        <!-- Добавьте другие форматы, если доступны -->
-        <!-- <source src="your-video.webm" type="video/webm"> -->
-        <!-- <source src="your-video.ogg" type="video/ogg"> -->
         Ваш браузер не поддерживает видео.
     </video>
 
@@ -835,582 +193,54 @@
 
     <!-- Стартовое окно выбора расы -->
     <div id="start-screen">
-        <h2>Выберите свою судьбу</h2>
+        <h2>Виберіть свою долю</h2>
         <div class="race-selection">
             <div class="race-option elf" data-race="elf">
                 <img src="https://i.pinimg.com/236x/cd/7b/fd/cd7bfd4486847f8db2a77296b864fe87.jpg" alt="Эльф">
-                <h3>Начать приключение за Эльфов</h3>
+                <h3>Почати пригоду за Ельфов</h3>
             </div>
-            <div class="race-option orc" data-race="orc">
+            <a href="orcs.html" class="race-option orc" data-race="orc">
                 <img src="https://kartinki.pics/uploads/posts/2022-03/thumbs/1647285283_35-kartinkin-net-p-orki-kartinki-36.jpg" alt="Орк">
-                <h3>Начать приключение за Орков</h3>
-            </div>
+                <h3>Почати пригоду за Орків</h3>
+            </a>
         </div>
     </div>
-
-
-    <main id="app">
-        <!-- Параллакс контейнер для фона - теперь это слой для наложения поверх видео -->
-        <div class="parallax-background" id="parallaxBackground"></div>
-
-        <!-- Параллакс элемент - лучник (Эльф) -->
-        <div class="parallax-archer" id="parallaxArcher"></div>
-
-         <!-- Параллакс элемент - орк (будет показан, если выбрана раса орков) -->
-         <div class="parallax-orc hidden" id="parallaxOrc">
-             <img src="https://cdn.pixabay.com/photo/2019/06/13/10/53/orc-4271671_1270.png" alt="Орк">
-         </div>
-
-
-        <h1 class="scroll-animate">Мир Древних Эльфов</h1>
-        <!-- Заголовок может меняться в зависимости от выбранной расы -->
-
-        <nav class="scroll-animate">
-            <ul>
-                <li data-page="main" class="active"><a href="#main">Главная</a></li>
-                <li data-page="elf-types"><a href="#elf-types">Виды эльфов</a></li>
-                <li data-page="history"><a href="#history">История</a></li>
-                <li data-page="culture"><a href="#culture">Культура</a></li>
-                <li data-page="gallery"><a href="#gallery">Галерея</a></li>
-                 <!-- Добавьте пункты для орков, если нужно -->
-                 <li data-page="orc-types" class="hidden"><a href="#orc-types">Виды орков</a></li>
-                 <li data-page="orc-history" class="hidden"><a href="#orc-history">История орков</a></li>
-            </ul>
-        </nav>
-
-        <span class="effect filter"></span>
-        <span class="effect text active hidden">Главная</span>
-
-        <!-- Контейнеры для разных страниц -->
-        <div id="main-page" class="page-content active scroll-animate">
-             <p>Добро пожаловать в загадочный и древний мир эльфов! Здесь, среди вековых лесов, сверкающих водопадов и величественных гор, живут существа, чья история переплетается с самой тканью мироздания. Этот сайт - ваш путеводитель по их культуре, видам и тайнам. Откройте для себя мудрость Высших Эльфов, ловкость Лесных Эльфов, мрачную красоту Темных Эльфов, спокойствие Морских Эльфов и стойкость Снежных Эльфов.</p>
-             <p>Каждая страница этого путешествия раскроет новые грани их существования, их отношения с природой и другими расами, их искусство и магию. Приготовьтесь погрузиться в мир, где магия реальна, а история насчитывает тысячелетия. Пусть ваше приключение начнется!</p>
-             <!-- Здесь может быть дополнительный контент для главной страницы -->
-        </div>
-
-        <div id="elf-types-page" class="page-content scroll-animate">
-            <h2>Виды Эльфов</h2>
-            <div class="elf-type">
-                <h2>Высшие Эльфы</h2>
-                <img src="https://static.wikia.nocookie.net/worlfofargot/images/5/50/%D0%92%D1%8B%D1%81%D1%88%D0%B8%D0%B5_%D1%8D%D0%BB%D1%8C%D1%84%D1%8B.jpeg/revision/latest?cb=20220624155321&path-prefix=ru" alt="Высшие Эльфы" class="elf-type-image">
-                <div class="elf-type-info">
-                    <p>Высшие эльфы, также известные как эльдары, являются самой древней и утонченной расой. Они обладают невероятной мудростью, магическими способностями и изысканной культурой. Их города построены с изяществом и гармонией с природой. Высшие эльфы живут тысячи лет, что дает им возможность овладеть множеством искусств и наук. Они создают удивительные артефакты и обладают глубокими знаниями о магии. Их общество строго иерархично, во главе стоит Совет Мудрейших, состоящий из самых старых и опытных эльфов.</p>
-                    <div class="enemies">
-                        <h3>Главные враги</h3>
-                        <p>Орки, темные эльфы (дроу), некроманты и силы тьмы. Высшие эльфы особенно враждебны к темным эльфам, так как они когда-то были одним народом, но разделились из-за религиозных разногласий.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="elf-type">
-                <h2>Лесные Эльфы</h2>
-                <img src="https://static.wikia.nocookie.net/tgw/images/3/3e/1626981330_38-gamerwall-pro-p-lesnie-elfi-art-kartinki-41.jpg/revision/latest?cb=20221115182032&path-prefix=ru" alt="Лесные Эльфы" class="elf-type-image">
-                <div class="elf-type-info">
-                    <p>Лесные эльфы живут в глубинах древних лесов, сливаясь с природой. Они превосходные лучники и следопыты, способные передвигаться бесшумно и становиться практически невидимыми среди деревьев. Их поселения часто расположены на гигантских деревьях или спрятаны в лесных чащах. Лесные эльфы поклоняются духам природы и древним богам леса. Они редко покидают свои леса, но яростно защищают их от любых посягательств. В отличие от высших эльфов, они предпочитают простой образ жизни, близкий к природе.</p>
-                    <div class="enemies">
-                        <h3>Главные враги</h3>
-                        <p>Лесорубы, орки, тролли и все, кто угрожает их лесам. Лесные эльфы особенно ненавидят расы, которые вырубают леса или загрязняют природу.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="elf-type">
-                <h2>Темные Эльфы (Дроу)</h2>
-                <img src="https://static.wikia.nocookie.net/rpg/images/c/cf/Drizzt.png/revision/latest/scale-to-width-down/573?cb=20180801111803&path-prefix=ru" alt="Темные Эльфы (Дроу)" class="elf-type-image">
-                <div class="elf-type-info">
-                    <p>Темные эльфы, или дроу, живут в подземных городах и поклоняются богине-пауку Лолс. Они жестоки, коварны и обладают мощной магией тьмы. Их кожа имеет темный оттенок, а волосы обычно белые или серебристые. Общество дроу матриархально, во главе стоят жрицы Лолс. Они практикуют рабство и часто совершают набеги на поверхность. Несмотря на жестокость, дроу создали удивительную подземную цивилизацию с величественными городами из черного камня и обсидиана. Они искусные маги и алхимики, специализирующиеся на ядах и магии тьмы.</p>
-                    <div class="enemies">
-                        <h3>Главные враги</div>
-                        <p>Все другие эльфы, особенно высшие эльфы, а также гномы и поверхностные расы. Дроу ведут постоянные войны с другими подземными расами за контроль над пещерами и ресурсами.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="elf-type">
-                <h2>Морские Эльфы</h2>
-                <img src="https://static.wikia.nocookie.net/pathfinder/images/6/65/Aquatic_elf.jpg/revision/latest?cb=20180402143259&path-prefix=ru" alt="Морские Эльфы" class="elf-type-image">
-                <div class="elf-type-info">
-                    <p>Морские эльфы обитают в глубинах океанов, создавая прекрасные города из кораллов и перламутра. Они могут дышать под водой и общаются с морскими существами. Их кожа имеет голубоватый или зеленоватый оттенок, а между пальцами есть перепонки. Морские эльфы редко контактируют с наземными расами, предпочитая свою подводную жизнь. Они создают удивительные сооружения из живых кораллов и жемчуга, а их магия связана с водой и морскими стихиями. Морские эльфы поклоняются богу морей и защищают океаны от загрязнения и разрушения.</p>
-                    <div class="enemies">
-                        <h3>Главные враги</h3>
-                        <p>Пираты, сахауги (морские демоны), ктулхианские культисты. Морские эльфы особенно враждебны к тем, кто загрязняет океаны или охотится на морских существ ради развлечения.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="elf-type">
-                <h2>Снежные Эльфы</h2>
-                 <img src="https://static.wikia.nocookie.net/pathfinder/images/e/ea/Snowcaster_elf.jpg/revision/latest?cb=20180404083117&path-prefix=ru" alt="Снежные Эльфы" class="elf-type-image">
-                <div class="elf-type-info">
-                    <p>Снежные эльфы обитают в заснеженных горах и ледяных пустошах. Их кожа бледна, почти прозрачна, а волосы белые или светло-голубые. Они приспособились к жизни в экстремально холодных условиях и обладают уникальной магией льда. Снежные эльфы живут в ледяных дворцах и городах, вырезанных в ледниках. Они редко покидают свои земли, но яростно защищают их от чужаков. Их культура основана на выживании в суровых условиях, и они уважают только тех, кто может выдержать холод их родины.</p>
-                    <div class="enemies">
-                        <h3>Главные враги</h3>
-                        <p>Огненные великаны, драконы, тролли и все, кто угрожает их ледяным землям. Снежные эльфы особенно враждебны к существам, использующим огненную магию.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="history-page" class="page-content scroll-animate">
-            <h2>История Эльфов</h2>
-            <p>История эльфов насчитывает тысячелетия, начиная с их появления в мире. Древние тексты гласят, что первые эльфы пробудились под звездами, и их судьба тесно связана с природой и магией...</p>
-            <p>Разделение на разные виды произошло из-за великих катаклизмов и миграций. Высшие эльфы остались в старых королевствах, Лесные ушли в чащи, Темные спустились под землю, Морские покорили океаны, а Снежные адаптировались к холоду...</p>
-             <!-- Дополнительный контент по истории -->
-        </div>
-
-         <div id="culture-page" class="page-content scroll-animate">
-            <h2>Культура Эльфов</h2>
-            <p>Культура эльфов разнообразна, но есть общие черты: уважение к природе, искусство, музыка, магия и долголетие. Высшие эльфы известны своей изысканностью и магическими знаниями...</p>
-            <p>Лесные эльфы живут в гармонии с лесом, их музыка - это шелест листвы и пение птиц. Темные эльфы имеют мрачную иерархию и жестокие ритуалы. Морские эльфы создают подводные города, а Снежные - ледяные крепости...</p>
-             <!-- Дополнительный контент по культуре -->
-        </div>
-
-         <div id="gallery-page" class="page-content scroll-animate">
-            <h2>Галерея</h2>
-            <p>Здесь вы найдете изображения, иллюстрирующие мир эльфов. От величественных лесов до мрачных подземных городов...</p>
-            <!-- Здесь можно добавить галерею изображений -->
-             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-                 <img src="https://via.placeholder.com/300x200?text=Gallery+Image+1" alt="Gallery Image 1" class="rounded-md shadow-md scroll-animate">
-                 <img src="https://via.placeholder.com/300x200?text=Gallery+Image+2" alt="Gallery Image 2" class="rounded-md shadow-md scroll-animate">
-                 <img src="https://via.placeholder.com/300x200?text=Gallery+Image+3" alt="Gallery Image 3" class="rounded-md shadow-md scroll-animate">
-                 <!-- Добавьте больше изображений по желанию -->
-             </div>
-        </div>
-
-         <!-- Пример страницы для Орков -->
-         <div id="orc-types-page" class="page-content scroll-animate">
-             <h2>Виды Орков</h2>
-             <p>Орки - сильная и выносливая раса, известная своей воинственностью и грубой силой. Они живут в племенах, часто враждуя друг с другом и с другими расами...</p>
-             <!-- Добавьте контент про виды орков -->
-         </div>
-
-         <div id="orc-history-page" class="page-content scroll-animate">
-             <h2>История Орков</h2>
-             <p>История орков полна войн и завоеваний. Они появились в мире в результате темных ритуалов или как искаженное подобие других рас...</p>
-             <!-- Добавьте контент про историю орков -->
-         </div>
-
-
-        <footer class="scroll-animate">
-            © 2023 Мир Древних Эльфов. Все права защищены.
-        </footer>
-    </main>
-
 
     <script>
         const preloader = document.getElementById('preloader');
         const startScreen = document.getElementById('start-screen');
-        const app = document.getElementById('app');
-        const parallaxBackground = document.getElementById('parallaxBackground');
-        const parallaxArcher = document.getElementById('parallaxArcher');
-        const parallaxOrc = document.getElementById('parallaxOrc'); // Получаем элемент орка
-        const nav = document.querySelector("nav");
-        const effectEl = document.querySelector(".effect.filter");
-        const textEl = document.querySelector(".effect.text");
-        const pageContents = document.querySelectorAll('.page-content');
-        const raceOptions = document.querySelectorAll('.race-option');
-        const mainTitle = document.querySelector('h1'); // Получаем заголовок
+        const elfOption = document.querySelector('.race-option.elf');
+        const orcOption = document.querySelector('.race-option.orc');
+        const video = document.getElementById('background-video');
 
-        let animationTime = 600;
-        let pCount = 15;
-        const colors = [1,2,3,1,2,3,1,4];
-        const timeVariance = 300;
-
-         // Intersection Observer для анимации при скролле
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    // Опционально: прекратить наблюдение после первого появления
-                    // observer.unobserve(entry.target);
-                } else {
-                    // Опционально: убрать класс при выходе из зоны видимости
-                    // entry.target.classList.remove('is-visible');
-                }
-            });
-        }, {
-            threshold: 0.1 // Элемент виден на 10%
+        // Обеспечиваем автоматическое воспроизведение видео
+        video.muted = true;
+        video.play().catch(e => {
+            console.log("Автовоспроизведение видео заблокировано:", e);
         });
 
-        function checkScrollAnimations() {
-            // Наблюдаем за элементами только на активной странице
-            const activePage = document.querySelector('.page-content.active');
-            if (activePage) {
-                 observer.disconnect(); // Останавливаем наблюдение за предыдущими элементами
-                 activePage.querySelectorAll('.scroll-animate').forEach(element => {
-                    // Сбрасываем состояние перед наблюдением, если нужно повторное появление
-                    // element.classList.remove('is-visible');
-                    observer.observe(element);
-                });
-                // Также наблюдаем за заголовком, навигацией и футером, которые всегда видны
-                 observer.observe(mainTitle);
-                 observer.observe(nav);
-                 observer.observe(document.querySelector('footer'));
-            }
-        }
-
-
-        // Параллакс эффект при скролле
-        function updateParallax() {
-            const scrollY = window.scrollY || window.pageYOffset;
-            const characterMovement = scrollY * 0.3; // Персонаж движется быстрее
-
-            // Применяем трансформацию к активному персонажу
-             if (!parallaxArcher.classList.contains('hidden')) {
-                 // Учитываем трансформацию мыши, если она активна
-                  const mouseX = (window.innerWidth > 768 ? (event.clientX / window.innerWidth - 0.5) : 0);
-                  const mouseY = (window.innerWidth > 768 ? (event.clientY / window.innerHeight - 0.5) : 0);
-                  parallaxArcher.style.transform = `translateZ(50px) translateY(${-characterMovement}px) translateX(${mouseX * 30}px) translateY(${mouseY * 30}px)`;
-             } else if (!parallaxOrc.classList.contains('hidden')) {
-                 // Учитываем трансформацию мыши, если она активна
-                  const mouseX = (window.innerWidth > 768 ? (event.clientX / window.innerWidth - 0.5) : 0);
-                  const mouseY = (window.innerWidth > 768 ? (event.clientY / window.innerHeight - 0.5) : 0);
-                  parallaxOrc.style.transform = `translateZ(50px) translateY(${-characterMovement}px) translateX(${mouseX * 30}px) translateY(${mouseY * 30}px)`;
-             }
-        }
-
-        // Реакция на движение мыши (для эффекта "плавания")
-        function handleMouseMove(e) {
-            // Отключаем эффект на мобильных
-             if (window.innerWidth <= 768) {
-                 app.style.transform = ''; // Сбрасываем трансформацию
-                 mainTitle.style.transform = 'translateZ(30px)';
-                 nav.style.transform = 'translateZ(20px)';
-                  const activePage = document.querySelector('.page-content.active');
-                  if(activePage) {
-                      activePage.style.transform = '';
-                  }
-                  // Сброс трансформации персонажа
-                  if (!parallaxArcher.classList.contains('hidden')) {
-                       parallaxArcher.style.transform = `translateZ(20px) translateY(${-window.scrollY * 0.3}px)`;
-                   } else if (!parallaxOrc.classList.contains('hidden')) {
-                       parallaxOrc.style.transform = `translateZ(20px) translateY(${-window.scrollY * 0.3}px)`;
-                   }
-                 return;
-             }
-
-            const mouseX = e.clientX / window.innerWidth - 0.5; // От -0.5 до 0.5
-            const mouseY = e.clientY / window.innerHeight - 0.5; // От -0.5 до 0.5
-
-            const rotateY = mouseX * 10; // Небольшой поворот по Y
-            const rotateX = -mouseY * 10; // Небольшой поворот по X (инвертируем для естественного эффекта)
-
-            // Применяем эффект к отдельным элементам
-             mainTitle.style.transform = `translateZ(30px) rotateX(${rotateX * 0.5}deg) rotateY(${rotateY * 0.5}deg)`;
-             nav.style.transform = `translateZ(20px) rotateX(${rotateX * 0.3}deg) rotateY(${rotateY * 0.3}deg)`;
-             // Применяем к активной странице контента
-             const activePage = document.querySelector('.page-content.active');
-             if(activePage) {
-                 activePage.style.transform = `rotateX(${rotateX * 0.2}deg) rotateY(${rotateY * 0.2}deg)`;
-             }
-             // Применяем к активному персонажу
-             if (!parallaxArcher.classList.contains('hidden')) {
-                  parallaxArcher.style.transform = `translateZ(50px) translateY(${-window.scrollY * 0.3}px) translateX(${mouseX * 30}px) translateY(${mouseY * 30}px)`;
-              } else if (!parallaxOrc.classList.contains('hidden')) {
-                  parallaxOrc.style.transform = `translateZ(50px) translateY(${-window.scrollY * 0.3}px) translateX(${mouseX * 30}px) translateY(${mouseY * 30}px)`;
-              }
-        }
-
-
-        // Инициализация параллакса и движения мыши
-        window.addEventListener('scroll', updateParallax);
-        window.addEventListener('resize', updateParallax);
-        document.addEventListener('mousemove', handleMouseMove);
-
-
-        // Навигация и эффекты (сохраняем существующую логику)
-        function noise(n = 1) {
-            return n/2 - Math.random() * n;
-        }
-
-        function getXY(distance,pointIndex,totalPoints) {
-            const x = (distance) * Math.cos(((360+noise(8))/totalPoints*pointIndex) * Math.PI / 180);
-            const y = (distance) * Math.sin(((360+noise(8))/totalPoints*pointIndex) * Math.PI / 180);
-            return [x, y];
-        }
-
-        function makeParticles($el) {
-            const d = [90,10];
-            const r = 100;
-
-            const bubbleTime = animationTime * 2 + timeVariance;
-            $el.style.setProperty( '--time', bubbleTime + 'ms' );
-
-            for( let i = 0; i < pCount; i++ ) {
-                const t = animationTime * 2 + noise(timeVariance * 2);
-                const p = createParticle(i, t, d, r);
-                const $place = $el;
-                if ( $place ) {
-                    $place.classList.remove('active');
-                    setTimeout(() => {
-                        const $particle = document.createElement('span');
-                        const $point = document.createElement('span');
-                        $particle.classList.add('particle');
-                        $particle.style = `
-                            --start-x: ${p.start[0]}px;
-                            --start-y: ${p.start[1]}px;
-                            --end-x: ${p.end[0]}px;
-                            --end-y: ${p.end[1]}px;
-                            --time: ${p.time}ms;
-                            --scale: ${p.scale};
-                            --color: var( --color-${p.color}, white );
-                            --rotate: ${p.rotate}deg;
-                        `;
-                        $point.classList.add('point');
-                        $particle.append( $point );
-                        $place.append($particle);
-                        requestAnimationFrame(() => {
-                            $place.classList.add('active');
-                        })
-                        setTimeout(() => {
-                            try {
-                                $place.removeChild( $particle );
-                            } catch(e) {
-                                console.error(e);
-                            }
-                        }, t );
-                    }, 30);
-                };
-            }
-        }
-
-        function createParticle(i, t, d, r) {
-            let rotate = noise(r/10);
-            let minDistance = d[0];
-            let maxDistance = d[1];
-            return {
-                start: getXY(minDistance,pCount-i,pCount),
-                end: getXY(maxDistance+noise(7),pCount-i,pCount),
-                time: t,
-                scale: 1 + noise(0.2),
-                color: colors[Math.floor(Math.random() * colors.length)],
-                rotate: rotate > 0 ? (rotate  + r/20)*10 : (rotate -  r/20)*10
-            }
-        }
-
-        function updateEffectPosition(element) {
-            const pos = element.getBoundingClientRect();
-            const styles = {
-                left: `${pos.left + window.scrollX}px`,
-                top: `${pos.top + window.scrollY}px`,
-                width: `${pos.width}px`,
-                height: `${pos.height}px`
-            };
-
-            Object.assign(effectEl.style, styles);
-            Object.assign(textEl.style, styles);
-            textEl.classList.remove('hidden');
-            textEl.textContent = element.textContent.trim();
-        }
-
-        const activateNavItem = ($el) => {
-            updateEffectPosition($el);
-
-            if (!$el.classList.contains('active')) {
-                nav.querySelectorAll('li').forEach(($li) => {
-                    $li.classList.remove('active');
-                });
-                effectEl.querySelectorAll('.particle').forEach(($p) => {
-                    effectEl.removeChild($p);
-                });
-                $el.classList.add('active');
-                textEl.classList.remove('active');
-
-                setTimeout(() => {
-                    textEl.classList.add('active');
-                }, 100);
-
-                makeParticles(effectEl);
-            }
-        };
-
-        // Функция для переключения страниц
-        function showPage(pageId) {
-            pageContents.forEach(page => {
-                page.classList.remove('active');
-                 page.classList.remove('is-visible'); // Сбрасываем анимацию при переключении
-            });
-
-            const targetPage = document.getElementById(pageId + '-page');
-            if (targetPage) {
-                targetPage.classList.add('active');
-                // Прокручиваем к началу страницы после переключения
-                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                 // Запускаем анимации появления на новой странице
-                 setTimeout(checkScrollAnimations, 100); // Небольшая задержка
-            }
-             // Обновляем активный пункт навигации
-             nav.querySelectorAll('li').forEach(li => {
-                 if (li.dataset.page === pageId) {
-                     activateNavItem(li);
-                 }
-             });
-             // Обновляем URL
-             window.history.pushState(null, null, '#' + pageId);
-        }
-
-         // Функция для скрытия стартового экрана и активации основного контента
-         function startGame(race) {
-             startScreen.classList.add('hidden');
-             app.classList.add('visible'); // Показываем основной контент
-
-             // Настраиваем контент в зависимости от выбранной расы
-             if (race === 'elf') {
-                 mainTitle.textContent = 'Приключение в Мире Древних Эльфов';
-                 parallaxArcher.classList.remove('hidden');
-                 parallaxOrc.classList.add('hidden');
-                 // Скрываем пункты меню для орков
-                  nav.querySelectorAll('li[data-page^="orc"]').forEach(li => li.classList.add('hidden'));
-                  // Показываем пункты меню для эльфов
-                  nav.querySelectorAll('li[data-page^="elf"], li[data-page="main"], li[data-page="history"], li[data-page="culture"], li[data-page="gallery"]').forEach(li => li.classList.remove('hidden'));
-
-             } else if (race === 'orc') {
-                 mainTitle.textContent = 'Приключение в Мире Орков';
-                 parallaxArcher.classList.add('hidden');
-                 parallaxOrc.classList.remove('hidden');
-                  // Скрываем пункты меню для эльфов
-                  nav.querySelectorAll('li[data-page^="elf"]').forEach(li => li.classList.add('hidden'));
-                   // Показываем пункты меню для орков
-                  nav.querySelectorAll('li[data-page^="orc"], li[data-page="main"], li[data-page="history"], li[data-page="culture"], li[data-page="gallery"]').forEach(li => li.classList.remove('hidden'));
-             }
-
-             // Инициализация навигации и показ первой страницы (main)
-             initNavigation();
-             showPage('main');
-
-             // Запускаем параллакс и анимации после скрытия стартового экрана
-             updateParallax();
-             checkScrollAnimations();
-         }
-
-
-        // Инициализация навигации (теперь вызывается после выбора расы)
-        function initNavigation() {
-            nav.querySelectorAll('li').forEach(($el) => {
-                 // Удаляем старые обработчики, чтобы избежать дублирования
-                 const oldClickHandler = $el._clickHandler; // Сохраняем ссылку на старый обработчик
-                 if (oldClickHandler) {
-                     $el.removeEventListener('click', oldClickHandler);
-                 }
-                 const oldKeyHandler = $el._keyHandler;
-                 if (oldKeyHandler) {
-                     $el.querySelector('a').removeEventListener('keydown', oldKeyHandler);
-                 }
-
-
-                const link = $el.querySelector('a');
-                const newClickHandler = (e) => {
-                    e.preventDefault();
-                    const pageId = $el.dataset.page;
-                    showPage(pageId);
-                };
-                 const newKeyHandler = (e) => {
-                     if (e.key === 'Enter' || e.key === ' ') {
-                         e.preventDefault();
-                          const pageId = $el.dataset.page;
-                          showPage(pageId);
-                     }
-                 };
-
-                 $el.addEventListener('click', newClickHandler);
-                 link.addEventListener('keydown', newKeyHandler);
-
-                 // Сохраняем ссылки на новые обработчики
-                 $el._clickHandler = newClickHandler;
-                 $el._keyHandler = newKeyHandler;
-            });
-
-             // Обработка хеша в URL при загрузке и изменении
-             // Эта часть остается, но будет работать только после скрытия стартового экрана
-             function handleHashChange() {
-                 if (!startScreen.classList.contains('hidden')) {
-                      // Если стартовый экран еще виден, игнорируем хеш
-                      return;
-                 }
-                 const hash = window.location.hash.substring(1); // Убираем #
-                 const pageId = hash || 'main'; // По умолчанию 'main' если хеша нет
-                 showPage(pageId);
-             }
-
-             window.addEventListener('hashchange', handleHashChange);
-
-             // Инициализация при первой загрузке (теперь только если хеш указывает на страницу)
-             // Если хеша нет, ждем выбора на стартовом экране
-              const initialHash = window.location.hash.substring(1);
-              if (initialHash) {
-                  // Если есть хеш, предполагаем, что пользователь хочет перейти сразу к странице
-                  // В этом случае, мы можем пропустить стартовый экран
-                  // Для простоты, пока оставим стартовый экран обязательным, но можно доработать
-                  // Например, сохранить выбранную расу в localStorage
-              }
-        }
-
-        // Скрытие загрузочного экрана после полной загрузки
         window.addEventListener('load', () => {
             preloader.classList.add('hidden');
-            // После загрузки, показываем стартовый экран (если он не скрыт хешем)
-             if (window.location.hash === '' || window.location.hash === '#') {
-                 startScreen.classList.remove('hidden');
-             } else {
-                 // Если есть хеш, предполагаем, что раса уже выбрана (или должна быть загружена)
-                 // Для простоты, если есть хеш, сразу запускаем игру за эльфов
-                 // В реальном приложении здесь нужно было бы проверить localStorage или параметр в URL
-                 startGame('elf'); // Начинаем за эльфов, если есть хеш
-             }
+            startScreen.classList.remove('hidden');
         });
 
-
-        // Инициализация при загрузке DOM
-        document.addEventListener('DOMContentLoaded', () => {
-            // Навигация и показ страниц теперь инициализируются после выбора расы
-
-            // Добавляем обработчики
-            window.addEventListener('resize', handleResize);
-            // Обработчик скролла теперь только для параллакса
-            window.addEventListener('scroll', updateParallax);
-             // Обработчики для кнопок выбора расы
-             raceOptions.forEach(option => {
-                 option.addEventListener('click', () => {
-                     const race = option.dataset.race;
-                     startGame(race);
-                 });
-             });
-
-
-            // Дополнительная проверка после полной загрузки DOM
-            // Анимации скролла запускаются после load и выбора расы
+        // Обработчик выбора эльфов
+        elfOption.addEventListener('click', function(e) {
+            e.preventDefault();
+            startScreen.style.transition = 'opacity 0.8s ease-out';
+            startScreen.style.opacity = '0';
+            
+            // Переход на страницу эльфов
             setTimeout(() => {
-                 // Первоначальный вызов параллакса (до выбора расы он будет работать с фоном)
-                 updateParallax();
-            }, 100); // Небольшая задержка для инициализации
+                window.location.href = 'elf.html';
+            }, 800);
         });
 
-        // Обработчик ресайза
-        function handleResize() {
-            const activeEl = nav.querySelector('li.active');
-            if (activeEl) {
-                updateEffectPosition(activeEl);
-            }
-            updateParallax();
-            // Перезапускаем наблюдение при ресайзе, чтобы учесть новые позиции
-             checkScrollAnimations();
-             // Сбрасываем трансформацию мыши на маленьких экранах
-             if (window.innerWidth <= 768) {
-                  // Сброс трансформации для элементов
-                   mainTitle.style.transform = 'translateZ(30px)';
-                   nav.style.transform = 'translateZ(20px)';
-                   const activePage = document.querySelector('.page-content.active');
-                   if(activePage) {
-                       activePage.style.transform = '';
-                   }
-                   // Сброс трансформации персонажа
-                   if (!parallaxArcher.classList.contains('hidden')) {
-                        parallaxArcher.style.transform = `translateZ(20px) translateY(${-window.scrollY * 0.3}px)`;
-                    } else if (!parallaxOrc.classList.contains('hidden')) {
-                        parallaxOrc.style.transform = `translateZ(20px) translateY(${-window.scrollY * 0.3}px)`;
-                    }
-             }
-        }
+        // Обработчик выбора орков (уже есть в ссылке)
+        orcOption.addEventListener('click', function(e) {
+            startScreen.style.transition = 'opacity 0.8s ease-out';
+            startScreen.style.opacity = '0';
+        });
     </script>
 </body>
 </html>
