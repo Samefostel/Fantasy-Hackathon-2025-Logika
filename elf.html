@@ -43,10 +43,13 @@
 
     #bg-video {
       position: fixed;
-      top: 0;
-      left: 0;
-      min-width: 100vw;
-      min-height: 100vh;
+      top: 50%;
+      left: 50%;
+      min-width: 150%;
+      min-height: 150%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%) scale(1.2);
       object-fit: cover;
       z-index: -1;
     }
@@ -89,6 +92,22 @@
     .avatar.selected {
       border-color: var(--btn-bg);
       transform: scale(1.2);
+    }
+
+    .result-avatar-container {
+      margin: -50px auto 10px auto;
+      position: relative;
+      z-index: 2;
+    }
+
+    .result-avatar {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 5px solid var(--btn-bg);
+      object-fit: cover;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transform: translateY(-30%);
     }
 
     .start-btn {
@@ -163,6 +182,7 @@
     .statistics {
       text-align: center;
       font-size: 18px;
+      margin-top: -30px;
     }
 
     #timer-container {
@@ -277,6 +297,9 @@
 
     <!-- Результат -->
     <div id="result-screen" class="hidden statistics">
+      <div class="result-avatar-container">
+        <img id="result-avatar" class="result-avatar" src="" alt="Ваш аватар" />
+      </div>
       <h3 id="result-message"></h3>
       <button id="start-btn-retry" class="start-btn">Почати знову</button>
     </div>
@@ -292,6 +315,7 @@
       const questionElement = document.getElementById('question');
       const answersContainer = document.getElementById('answers');
       const resultMessage = document.getElementById('result-message');
+      const resultAvatar = document.getElementById('result-avatar');
       const timerText = document.getElementById('timer-text');
       const avatarImages = document.querySelectorAll('.avatar');
       const themeToggle = document.getElementById('theme-toggle');
@@ -305,11 +329,10 @@
       let questions = [];
       let currentQuestionIndex = 0;
       let correctAnswers = 0;
-      let totalQuestions = 5; // кількість питань
+      let totalQuestions = 5;
       let timeLeft = 60;
       let timerInterval;
 
-      // Визначення питань
       const questionsData = [
         {
           question: "Як ти віддаєш перевагу проводити час?",
@@ -363,9 +386,7 @@
         }
       ];
 
-      // Визначення результату
       function getResult() {
-        // простий аналіз за кількістю відповідей
         const answersCount = {
           "Дружба": 0,
           "Магія": 0,
@@ -395,7 +416,6 @@
 
       let answers = [];
 
-      // Обробка аватара
       avatarImages.forEach(img => {
         img.addEventListener('click', () => {
           avatarImages.forEach(avatar => avatar.classList.remove('selected'));
@@ -409,7 +429,6 @@
           alert("Будь ласка, виберіть аватар!");
           return;
         }
-        // Ініціалізація тесту
         questions = [...questionsData];
         currentQuestionIndex = 0;
         correctAnswers = 0;
@@ -458,7 +477,6 @@
         
         answersContainer.classList.remove('visible');
         
-        // Запускаємо анімацію після невеликої затримки, щоб DOM оновився
         setTimeout(() => {
           questionElement.classList.add('visible');
           answersContainer.classList.add('visible');
@@ -472,11 +490,9 @@
           clearInterval(timerInterval);
           finishTest();
         } else {
-          // Спочатку ховаємо поточне питання
           questionElement.classList.remove('visible');
           answersContainer.classList.remove('visible');
           
-          // Після завершення анімації завантажуємо наступне питання
           setTimeout(() => {
             loadQuestion();
           }, 500);
@@ -491,6 +507,7 @@
           <p><strong>Ваш ельф: </strong></p>
           <p>${resultText}</p>
         `;
+        resultAvatar.src = selectedAvatar;
       }
 
       document.getElementById('end-early-btn').addEventListener('click', () => {
